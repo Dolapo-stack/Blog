@@ -1,0 +1,27 @@
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import "./App.css";
+import "../src/index.css";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import HomePage from "./pages/HomePage";
+import CreateBlog from "./pages/CreateBlog";
+
+function App() {
+  return (
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<SignUpPage />}  />
+          <Route path="/create_blog" element={<CreateBlog />} />
+          
+        </Routes>
+      </Router>
+    </>
+  );
+}
+
+export default App;
