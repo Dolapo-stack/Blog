@@ -7,17 +7,18 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
 import CreateBlog from "./pages/CreateBlog";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <>
+      <ToastContainer />
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<SignUpPage />}  />
+          <Route path="/register" element={<SignUpPage />} />
           <Route path="/create_blog" element={<CreateBlog />} />
-          
         </Routes>
       </Router>
     </>
