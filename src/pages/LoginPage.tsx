@@ -3,20 +3,43 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginImage from "../assets/images/login_image.png";
 import Layout from "../components/Layout";
 import { login } from "../services/api";
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
 
 interface LoginValues {
   email: string;
   password: string;
 }
 
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
 const Login = () => {
   const navigate = useNavigate();
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{email?: string; password?: string}>({})
 
   const initialValues: LoginValues = { email: "", password: "" };
+
+  //  Validate each field as user types
+  const validateField = async (field: string, value: string) => {
+    try {
+      await loginSchema.validateAt(field, { [field]: value });
+
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    } catch (err: any) {
+      setErrors((prev) => ({ ...prev, [field]: err.message }));
+    }
+  };
 
   const handleSubmit = async (
     values: LoginValues,
@@ -85,7 +108,11 @@ const Login = () => {
     <Layout>
       <div className="login_wrapper">
         <div className="container form_item">
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            validationSchema={loginSchema}
+          >
             {({ isSubmitting }) => (
               <Form className="form">
                 <h2 className="login_title">Welcome back!</h2>
@@ -99,6 +126,11 @@ const Login = () => {
                     id="email"
                     placeholder="Enter your email"
                   />
+                  <ErrorMessage
+                    name="email"
+                    component="p"
+                    className="error_message"
+                  />
                 </div>
                 <div className="password">
                   <label htmlFor="password">Password</label>
@@ -108,6 +140,11 @@ const Login = () => {
                     name="password"
                     id="password"
                     placeholder="Enter password"
+                  />
+                  <ErrorMessage
+                    name="password"
+                    component="p"
+                    className="error_message"
                   />
                 </div>
 

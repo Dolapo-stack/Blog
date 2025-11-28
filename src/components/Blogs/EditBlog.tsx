@@ -2,9 +2,9 @@ import { useState } from "react";
 import { editBlog } from "../../services/api";
 import { toast } from "react-toastify";
 import { IBlog } from "../../types";
-import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-//type declaration
 interface EditBlogProps {
   onClose: () => void;
   blog: IBlog;
@@ -16,7 +16,16 @@ interface FormValues {
   description: string;
 }
 
-  const EditBlog = ({ onClose, blog, fetchBlogs }: EditBlogProps) => {
+const validationSchema = Yup.object({
+  title: Yup.string()
+    .required("Title is required")
+    .min(3, "Title must be at least 3 characters"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+});
+
+const EditBlog = ({ onClose, blog, fetchBlogs }: EditBlogProps) => {
   const initialValues: FormValues = {
     title: blog.title,
     description: blog.description,
@@ -31,7 +40,6 @@ interface FormValues {
           position: "top-right",
           autoClose: 3000,
         });
-
         fetchBlogs();
         onClose();
       }
@@ -42,7 +50,11 @@ interface FormValues {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
       {({ isSubmitting }) => (
         <Form>
           <h2>Edit Blog Post</h2>
@@ -58,6 +70,7 @@ interface FormValues {
               name="title"
               placeholder="Enter blog title"
             />
+            <ErrorMessage name="title" component="div" className="error" />
           </div>
 
           {/* Description */}
@@ -70,6 +83,11 @@ interface FormValues {
               id="description"
               name="description"
               placeholder="Enter blog description"
+            />
+            <ErrorMessage
+              name="description"
+              component="div"
+              className="error"
             />
           </div>
 
@@ -88,7 +106,6 @@ interface FormValues {
     </Formik>
   );
 };
-
 
 
 export default EditBlog;

@@ -5,6 +5,7 @@ import { deleteBlog } from "../../services/api";
 import { ToastContainer, toast } from "react-toastify";
 import { IBlog } from "../../types";
 
+
 interface IProps {
   onClose: () => void;
   deletedItem: IBlog;

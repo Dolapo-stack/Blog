@@ -105,5 +105,11 @@ padding-bottom: 30px;
 
 }
 
+.error_message, .error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 
 
