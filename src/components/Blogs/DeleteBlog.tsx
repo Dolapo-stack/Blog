@@ -14,13 +14,11 @@ interface IProps {
 
 const DeleteBlog = ({ onClose, deletedItem, fetchBlogs }: IProps) => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleDelete = async () => {
     setLoading(true);
     try {
       const response = await deleteBlog(deletedItem._id);
-      console.log(response);
       if (response.status === 200) {
         toast.success(response.data.message || "Blog deleted successfully!", {
           position: "top-right",
@@ -30,7 +28,6 @@ const DeleteBlog = ({ onClose, deletedItem, fetchBlogs }: IProps) => {
         setTimeout(() => onClose(), 300); // ensure toast displays
       }
     } catch (error) {
-      console.log(error);
       toast.error("Failed to delete blog.");
     } finally {
       setLoading(false);

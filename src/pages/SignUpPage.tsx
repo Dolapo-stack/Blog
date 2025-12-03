@@ -57,7 +57,6 @@ const SignUp = () => {
   };
 
   return (
-    <Layout>
       <div className="signup_wrapper">
         <div className="container">
           <Formik
@@ -130,7 +129,6 @@ const SignUp = () => {
           <img src={SignUpImage} alt="Signup" />
         </div>
       </div>
-    </Layout>
   );
 };
 

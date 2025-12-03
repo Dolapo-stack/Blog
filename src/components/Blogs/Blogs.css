@@ -30,3 +30,9 @@
   margin-right: 10px;
 }
 
+.welcome_message{
+  text-align: right;
+  color: #567b3b;
+  padding-right: 20px;
+  text-decoration: underline;
+}

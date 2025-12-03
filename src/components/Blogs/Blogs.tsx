@@ -17,6 +17,9 @@ const Blogs = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<IBlog>();
 
+  const storedUser = sessionStorage.getItem("user");
+  const username = storedUser ? JSON.parse(storedUser).name : "Guest";
+
   const openModal = (item: IBlog) => {
     setSelectedBlog(item);
     setModalOpen(true);
@@ -37,11 +40,9 @@ const Blogs = () => {
     try {
       setLoading(true);
       const response = await getAllBlogs();
-      console.log(response.data.blogs);
       setBlogs(response.data.blogs);
-      console.log(blogs);
     } catch (error) {
-      console.log(error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -53,6 +54,7 @@ const Blogs = () => {
 
   return (
     <>
+      <p className="welcome_message">Welcome, {username} </p>
       <div className="blog_cards_wrapper">
         {loading &&
           Array.from(new Array(2)).map((_, index) => (
@@ -83,47 +85,45 @@ const Blogs = () => {
                 </div>
               </div>
             </div>
-          ))
-          
-        }
+          ))}
       </div>
 
-{!loading &&
-      <div className="blog_cards_wrapper">
-        {blogs.map((blog) => {
-          return (
-            <div className="blog_container" key={blog._id}>
-              <div className="blog_image">
-                <img
-                  src={skincare_bg}
-                  alt={blog.title}
-                  className="skincare_bg"
-                />
-              </div>
-              <div className="blog_content">
-                <h4 className="blog_title" style={{ color: "#3A5B22" }}>
-                  {blog.title}
-                </h4>
-                <span className="author">
-                  <small>Dominic Sea</small>
-                </span>
-                <span className="date">
-                  <small>7th October, 2025</small>
-                </span>
-                <p className="content">{blog.description}</p>
+      {!loading && (
+        <div className="blog_cards_wrapper">
+          {blogs.map((blog) => {
+            return (
+              <div className="blog_container" key={blog._id}>
+                <div className="blog_image">
+                  <img
+                    src={skincare_bg}
+                    alt={blog.title}
+                    className="skincare_bg"
+                  />
+                </div>
+                <div className="blog_content">
+                  <h4 className="blog_title" style={{ color: "#3A5B22" }}>
+                    {blog.title}
+                  </h4>
+                  <span className="author">
+                    <small>Dominic Sea</small>
+                  </span>
+                  <span className="date">
+                    <small>7th October, 2025</small>
+                  </span>
+                  <p className="content">{blog.description}</p>
 
-                <div className="action_btns">
-                  <button onClick={() => handleOpenEditModal(blog)}>
-                    Edit
-                  </button>
-                  <button onClick={() => openModal(blog)}>Delete</button>
+                  <div className="action_btns">
+                    <button onClick={() => handleOpenEditModal(blog)}>
+                      Edit
+                    </button>
+                    <button onClick={() => openModal(blog)}>Delete</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-}
+            );
+          })}
+        </div>
+      )}
 
       <Modal isOpen={isModalOpen} onClose={handleClose}>
         <DeleteBlog
