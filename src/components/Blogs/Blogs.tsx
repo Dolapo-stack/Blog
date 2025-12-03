@@ -56,6 +56,10 @@ const Blogs = () => {
     <>
       <p className="welcome_message">Welcome, {username} </p>
       <div className="blog_cards_wrapper">
+        {blogs.length === 0 ? (
+
+        ):jiuhhhh
+      }
         {loading &&
           Array.from(new Array(2)).map((_, index) => (
             <div className="blog_container" key={index}>
