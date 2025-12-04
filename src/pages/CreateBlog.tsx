@@ -36,7 +36,7 @@ const CreateBlog = () => {
       console.log(response);
 
       setOpen(true);
-      navigate("/");
+      navigate("/blogs");
     } catch (error) {
       console.log(error);
     } finally {
